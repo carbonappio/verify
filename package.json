@@ -1,0 +1,25 @@
+{
+  "dependencies": {
+    "axios": "^0.26.1",
+    "node-fetch": "^2.6.7",
+    "phin": "^3.6.1"
+  },
+  "name": "@carbonappio/verify",
+  "version": "1.0.0",
+  "description": "Roblox account linking got a big upgrade.",
+  "main": "src/index.mjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "roblox",
+    "account",
+    "link",
+    "verify",
+    "roblox",
+    "bloxlink",
+    "rover"
+  ],
+  "author": "carbonappio",
+  "license": "ISC"
+}
