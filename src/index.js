@@ -1,25 +1,20 @@
-"use strict";
+const phin = require('phin');
+const axios = require('axios').default;
+const config = require('../config.json');
 
-import phin from "phin";
-
-/**
- * Function to search if user is linked with Bloxlink API via Discord user ID
- * @param {number|string} id Discord ID to search upon.
- * @returns {Promise} Promise that reflects an object with the user's data, or false if none is found.
- */
-
-export async function checkBloxlink(UserId) {
+async function checkBloxlink(UserId) {
   if (!UserId) {
     throw new Error("No Discord user ID was provided!")
   }
 
   try {
-    const { body } = await phin({
-      url: `https://api.blox.link/v1/user/${UserId}`,
-      parse: 'json'
+    const { data } = await axios.get(`https://v3.blox.link/developer/discord/${UserId}`, {
+      headers: {
+        "api-key": "e277d215-bf2a-462a-bfd7-eb988ce87f33"
+      }
     });
 
-    return body.status === "error"
+    return data.user.robloxId === null
       ? {
         linked: false,
         message: "User not linked with Bloxlink"
@@ -27,7 +22,7 @@ export async function checkBloxlink(UserId) {
       : {
         linked: true,
         DiscordId: UserId,
-        RobloxId: body.primaryAccount,
+        RobloxId: data.user.robloxId,
       };
 
   } catch (error) {
@@ -35,13 +30,7 @@ export async function checkBloxlink(UserId) {
   }
 }
 
-/**
- * Function to search if user is linked with Eastside Platform API via Discord user ID
- * @param {number|string} id Discord ID to search upon.
- * @returns {Promise} Promise that reflects an object with the user's data, or false if none is found.
- */
-
-export async function checkEastside(UserId) {
+async function checkEastside(UserId) {
   if (!UserId) {
     throw new Error("No Discord user ID was provided!")
   }
@@ -68,13 +57,7 @@ export async function checkEastside(UserId) {
   }
 }
 
-/**
- * Function to search if user is linked with Rover API via Discord user ID
- * @param {number|string} id Discord ID to search upon.
- * @returns {Promise} Promise that reflects an object with the user's data, or false if none is found.
- */
-
- export async function checkRover(UserId) {
+async function checkRover(UserId) {
   if (!UserId) {
     throw new Error("No Discord user ID was provided!")
   }
@@ -101,7 +84,7 @@ export async function checkEastside(UserId) {
   }
 }
 
-export async function checkAll(UserId) {
+async function checkAll(UserId) {
   if (!UserId) {
     throw new Error("No Discord user ID was provided!")
   }
@@ -117,4 +100,21 @@ export async function checkAll(UserId) {
   }
 
   return data
+}
+
+async function generateWords(count = 5, words = config.words) {
+  const selected = [];
+  for (let i = 0; i < count; i++) {
+    selected.push(words[Math.floor(Math.random() * words.length)]);
+  }
+
+  return selected.join(" ");
+}
+
+module.exports = {
+  checkBloxlink,
+  checkEastside,
+  checkRover,
+  checkAll,
+  generateWords
 }
