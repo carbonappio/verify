@@ -7,7 +7,7 @@
   "name": "@carbonappio/verify",
   "version": "0.0.1",
   "description": "Roblox account linking got a big upgrade.",
-  "main": "src/index.mjs",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
